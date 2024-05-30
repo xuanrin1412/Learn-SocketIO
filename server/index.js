@@ -25,9 +25,19 @@ io.on("connection", (socket) => {
     socket.on("join_room", (data) => {
         socket.join(data)
     })
+    //gửi đến tất cả ng trong phòng ko bao gồm ng gửi 
     socket.on("send_message", (data) => {
         socket.to(data.room).emit("receive_message", data) // gửi tin nhan den room 
     })
+    // gửi đến tất cả ng trong phòng bao gồm người gửi
+    // socket.on("send_message", (data) => {
+    //     const {room,message} = data;
+    //     io.in(room).emit("receive_message",{ message, senderId: socket.id}) // gửi tin nhan den room 
+    // })
+
+    socket.on('disconnect', () => {
+        console.log(`User Disconnect: ${socket.id}`);
+      });
 });
 
 server.listen(3001, () => {
